@@ -35,7 +35,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': '/resources/ts',
+            '@': '/resources',
             '@common': '/resources/components/common'
         },
     },
