@@ -1,0 +1,27 @@
+@import 'material-icons/iconfont/material-icons.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --color-primary: #c97a03;
+        --color-primary-light: #ecab49;
+        --color-primary-contrast: #FFFFFF;
+        --color-error: #cb2727;
+    }
+}
+
+
+@font-face {
+    font-family: "Nunito";
+    src: local("Nunito"),
+    url(../assets/fonts/Nunito.ttf) format("truetype");
+}
+
+body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
