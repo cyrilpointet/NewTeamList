@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -48,6 +49,8 @@ class UserController extends Controller
 
         $token = $user->createToken('event_manager')->plainTextToken;
 
+        $user->teams;
+
         $response = [
             'user' => $user,
             'token' => $token
@@ -84,6 +87,8 @@ class UserController extends Controller
 
         $token = $user->createToken('event_manager')->plainTextToken;
 
+        $user->teams;
+
         $response = [
             'user' => $user,
             'token' => $token
@@ -98,6 +103,7 @@ class UserController extends Controller
     public function show(Request $request)
     {
         $user = $request->user();
+        $user->teams;
         return $user;
     }
 
@@ -108,5 +114,34 @@ class UserController extends Controller
     public function getUserByNameOrEmail(Request $request, $name)
     {
         return User::where('name', 'like', '%' . $request->name . '%')->orWhere('email', 'like', '%' . $name . '%')->take(10)->get();
+    }
+
+    /**
+     * Leave a team
+     * @urlParam id int required  The team's id
+     */
+    public function leaveTeam(Request $request, $id) {
+        $user = $request->user();
+        foreach ($user->teams as $team) {
+            if ($team->id === intval($request->route('id')) && true === $team->pivot->admin) {
+                return response([
+                    "message" => "Can't leave a team when you're admin"
+                ], 403);
+            }
+        }
+
+        $team = Team::find($id);
+        if (null === $team) {
+            return response([
+                "message" => "Unkwown team"
+            ], 404);
+        }
+
+        $team->members()->detach($user->id);
+
+        $response = [
+            'message' => 'team leaved',
+        ];
+        return response($response, 201);
     }
 }

@@ -11,7 +11,6 @@ class ApiConsumer {
     }
 
     setToken(token: string) {
-        console.log(token);
         localStorage.setItem("token", token);
         this.headers = {
             ...this.headers,
