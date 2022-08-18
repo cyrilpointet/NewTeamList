@@ -18,11 +18,11 @@ class EnsureIsTeamMember
     {
 
         $user = $request->user();
-        $teams = $user->teams()->where('team_id', $request->route('id'))->get();
-        if (0 === count($teams)) {
-            return response([
-                'message' => ['User is not a team member']
-            ], 403);
+        foreach ($user->teams as $team) {
+            if ($team->id === intval($request->route('id'))) {
+                return $next($request);
+                exit;
+            }
         }
         return $next($request);
     }

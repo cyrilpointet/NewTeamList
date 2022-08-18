@@ -50,7 +50,7 @@ async function leaveTeam() {
 
             <Badge
                 :value="
-                    teamStore.hasInvitations
+                    teamStore.hasInvitations && teamStore.isUserManager
                         ? teamStore.team.invitations.length
                         : undefined
                 "

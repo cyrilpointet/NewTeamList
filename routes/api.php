@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum', 'isTeamMember'])->group(function () {
     Route::get('/team/{id}', [TeamController::class, 'show']);
     Route::delete('/user/team/{id}', [UserController::class, 'leaveTeam']);
+    Route::post('/team/{id}/post', [PostController::class, 'create']);
+    Route::delete('/post/{id}', [PostController::class, 'delete']);
 });
 
 Route::middleware(['auth:sanctum', 'isTeamAdmin'])->group(function () {

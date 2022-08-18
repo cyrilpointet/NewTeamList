@@ -16,6 +16,7 @@ class TeamController extends Controller
     private function populateTeam($team) {
         $team->members;
         $team->invitations;
+        $team->posts;
         foreach ($team->invitations as $invitation) {
             $invitation->user;
         }

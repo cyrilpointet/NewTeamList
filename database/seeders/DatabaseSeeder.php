@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(TeamsTableSeeder::class);
         $this->call(InvitationsTableSeeder::class);
+        $this->call(PostTableSeeder::class);
         Schema::enableForeignKeyConstraints();
     }
 }

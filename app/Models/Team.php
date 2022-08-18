@@ -40,4 +40,9 @@ class Team extends Model
             false
         );
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
