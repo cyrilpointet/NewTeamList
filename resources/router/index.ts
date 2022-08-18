@@ -2,10 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import type { RouteLocationNormalized } from "vue-router";
 
 import { useUserStore } from "@/stores/user";
-//import { useTeamStore } from "@/stores/team";
+import { useTeamStore } from "@/stores/team";
 
-import HomeView from "@/components/pages/HomeView.vue";
-import AccountView from "@/components/pages/AccountView.vue";
+import HomePage from "@/components/pages/HomePage.vue";
+import AccountPage from "@/components/pages/AccountPage.vue";
+import TeamPage from "@/components/pages/TeamPage.vue";
 
 async function autoLog(
     to: RouteLocationNormalized,
@@ -29,22 +30,51 @@ async function autoLog(
     }
 }
 
+async function preloadTeam(
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    next: Function
+) {
+    const teamStore = useTeamStore();
+    if (teamStore.team?.id === to.params.id) {
+        next();
+        return;
+    }
+    if (typeof to.params.id === "string") {
+        try {
+            await teamStore.getTeam(to.params.id);
+            next();
+            return;
+        } catch {
+            next({ path: "/" });
+            return;
+        }
+    } else {
+        next({ path: "/" });
+        return;
+    }
+}
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
             path: "/",
             name: "home",
-            component: HomeView,
+            component: HomePage,
         },
         {
             path: "/account",
             name: "account",
-            // route level code-splitting
-            // this generates a separate chunk (About.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: AccountView,
+            component: AccountPage,
             beforeEnter: [autoLog],
+        },
+        {
+            path: "/team/:id",
+            name: "team",
+            component: () => TeamPage,
+            beforeEnter: [autoLog, preloadTeam],
         },
     ],
 });

@@ -1,8 +1,17 @@
 import { defineStore } from "pinia";
 import { ApiConsumer } from "@/services/ApiConsumer";
 import type { User } from "@/stores/storeTypes";
+import { Team } from "@/stores/storeTypes";
 
-//interface User extends User {}
+interface UserTeam extends Team {
+    pivot: {
+        admin: boolean;
+    };
+}
+
+interface UserStore extends User {
+    teams: UserTeam[];
+}
 
 type UserRootState = {
     user: User | null;
@@ -19,7 +28,7 @@ export const useUserStore = defineStore({
     },
     actions: {
         async refreshUser() {
-            const user = (await ApiConsumer.get("user/self")) as User;
+            const user = (await ApiConsumer.get("user")) as UserStore;
             this.user = user;
         },
         async autoLogin() {
@@ -27,7 +36,7 @@ export const useUserStore = defineStore({
             try {
                 if (localStorage.getItem("token")) {
                     ApiConsumer.setToken(localStorage.getItem("token") || "");
-                    const user = (await ApiConsumer.get("user")) as User;
+                    const user = (await ApiConsumer.get("user")) as UserStore;
                     this.user = user;
                 }
             } catch (e) {
@@ -40,7 +49,7 @@ export const useUserStore = defineStore({
             const data = (await ApiConsumer.post("user/login", {
                 email,
                 password,
-            })) as { user: User; token: string };
+            })) as { user: UserStore; token: string };
             this.user = data.user;
             ApiConsumer.setToken(data.token);
         },

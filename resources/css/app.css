@@ -25,3 +25,43 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+    transition: all 0.2s ease;
+}
+.slide-up-enter-from,
+.slide-up-leave-to {
+    opacity: 0;
+    transform: translateY(100%);
+}
+
+.turn-enter-active,
+.turn-leave-active {
+    transition: all 0.2s ease;
+}
+.turn-enter-from,
+.turn-leave-to {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.swipe-enter-active,
+.swipe-leave-active {
+    transition: all 0.2s ease;
+}
+.swipe-enter-from,
+.swipe-leave-to {
+    opacity: 0;
+    transform: translateX(-100%);
+}

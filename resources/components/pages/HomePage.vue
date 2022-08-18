@@ -3,6 +3,8 @@ import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "@/stores/user";
 import Login from "@/components/user/Login.vue";
 import Register from "@/components/user/Register.vue";
+import Teams from "@/components/user/Teams.vue";
+import TeamCreate from "@/components/team/TeamCreate.vue";
 
 const userStore = useUserStore();
 const hasAccount = ref(false);
@@ -35,7 +37,10 @@ onBeforeMount(async () => {
 
         <div v-else>
             <Card class="mt-6">
-                <h2>Logged</h2>
+                <Teams class="-m-4" />
+            </Card>
+            <Card class="mt-4">
+                <TeamCreate />
             </Card>
         </div>
     </div>
