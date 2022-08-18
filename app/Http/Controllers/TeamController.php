@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\DB;
  */
 class TeamController extends Controller
 {
+    private function populateTeam($team) {
+        $team->members;
+        $team->invitations;
+        foreach ($team->invitations as $invitation) {
+            $invitation->user;
+        }
+    }
+
     /**
      * Create a team
      * and set current user as member and admin
@@ -36,8 +44,7 @@ class TeamController extends Controller
         $user = $request->user();
 
         $team->members()->attach($user->id, ['admin' => true]);
-        $team->members;
-        $team->invitations;
+        $this->populateTeam($team);
 
         return $team;
     }
@@ -54,8 +61,7 @@ class TeamController extends Controller
                 "message" => "Groupe inconnu"
             ], 404);
         }
-        $team->members;
-        $team->invitations;
+        $this->populateTeam($team);
 
         return response($team, 200);
     }
@@ -95,8 +101,7 @@ class TeamController extends Controller
         $team->name = $request->name;
         $team->save();
 
-        $team->members;
-        $team->invitations;
+        $this->populateTeam($team);
 
         return response($team, 200);
     }
@@ -144,8 +149,7 @@ class TeamController extends Controller
         ]);
 
         $team = Team::find($id);
-        $team->members;
-        $team->invitations;
+        $this->populateTeam($team);
 
         return response($team, 200);
     }
@@ -183,8 +187,7 @@ class TeamController extends Controller
 
         $team->members()->detach($request->id);
 
-        $team->members;
-        $team->invitations;
+        $this->populateTeam($team);
 
         return response($team, 200);
     }

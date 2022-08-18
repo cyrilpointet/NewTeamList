@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ApiConsumer } from "@/services/ApiConsumer";
-import type { User } from "@/stores/storeTypes";
+import type { Invitation, User } from "@/stores/storeTypes";
 import { Team } from "@/stores/storeTypes";
 
 interface UserTeam extends Team {
@@ -9,12 +9,17 @@ interface UserTeam extends Team {
     };
 }
 
+interface UserInvitation extends Invitation {
+    team: Team;
+}
+
 interface UserStore extends User {
     teams: UserTeam[];
+    invitations: UserInvitation[];
 }
 
 type UserRootState = {
-    user: User | null;
+    user: UserStore | null;
 };
 
 export const useUserStore = defineStore({
@@ -25,6 +30,8 @@ export const useUserStore = defineStore({
         } as UserRootState),
     getters: {
         isLogged: (state) => state.user !== null,
+        hasInvitations: (state) =>
+            state.user && state.user.invitations.length > 0,
     },
     actions: {
         async refreshUser() {

@@ -58,7 +58,7 @@ async function deleteMember() {
     <div
         v-for="member in teamStore.team.members"
         :key="member.id"
-        class="px-4 py-2 flex items-center border-b last:border-0"
+        class="px-4 py-2 flex items-center border-gray-300 border-solid border-b last:border-0"
     >
         <p class="flex-1">
             {{ member.name }}

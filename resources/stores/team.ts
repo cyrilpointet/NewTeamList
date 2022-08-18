@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ApiConsumer } from "@/services/ApiConsumer";
 import { useUserStore } from "@/stores/user";
-import type { Team, User } from "@/stores/storeTypes";
+import type { Invitation, Team, User } from "@/stores/storeTypes";
 
 interface TeamMember extends User {
     pivot: {
@@ -10,7 +10,8 @@ interface TeamMember extends User {
 }
 
 interface StoreTeam extends Team {
-    members: Array<TeamMember>;
+    members: TeamMember[];
+    invitations: Invitation[];
 }
 
 type TeamRootState = {
@@ -24,6 +25,8 @@ export const useTeamStore = defineStore({
             team: null,
         } as TeamRootState),
     getters: {
+        hasInvitations: (state) =>
+            state.team && state.team.invitations.length > 0,
         isUserManager: (state) => {
             const userStore = useUserStore();
             const user = state.team?.members.find(

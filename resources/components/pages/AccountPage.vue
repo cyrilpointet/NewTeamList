@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
 import router from "@/router";
+import UserInvitations from "@/components/user/UserInvitations.vue";
 
 const userStore = useUserStore();
 
@@ -21,6 +22,15 @@ function logout() {
         </div>
 
         <div class="mt-6 grid gap-4 grid-cols-1 lg:grid-cols-2">
+            <div v-if="userStore.hasInvitations">
+                <Accordion
+                    title="Mes invitations en attente"
+                    :number="userStore.user.invitations.length"
+                >
+                    <UserInvitations />
+                </Accordion>
+            </div>
+
             <div>
                 <Accordion title="Déconnexion">
                     <div class="p-3 flex justify-center">

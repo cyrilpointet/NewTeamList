@@ -7,6 +7,7 @@ import { errorHelper } from "@/helpers/errorHelper";
 import TeamEdit from "@/components/team/TeamEdit.vue";
 import TeamDelete from "@/components/team/TeamDelete.vue";
 import TeamMembers from "@/components/team/TeamMembers.vue";
+import TeamInvitations from "@/components/team/TeamInvitations.vue";
 
 const teamStore = useTeamStore();
 
@@ -46,7 +47,13 @@ async function leaveTeam() {
                 {{ teamStore.team?.name }}
             </h1>
 
-            <Badge :value="undefined">
+            <Badge
+                :value="
+                    teamStore.hasInvitations
+                        ? teamStore.team.invitations.length
+                        : undefined
+                "
+            >
                 <ButtonIcon
                     size="sm"
                     class="bg-primary text-primary-contrast shadow"
@@ -68,9 +75,16 @@ async function leaveTeam() {
                 class="grid gap-4 grid-cols-1 lg:grid-cols-2"
             >
                 <div v-if="teamStore.isUserManager">
-                    <Accordion title="Demande d'adhésion en cours" :number="0">
+                    <Accordion
+                        title="Demande d'adhésion en cours"
+                        :number="
+                            teamStore.hasInvitations
+                                ? teamStore.team.invitations.length
+                                : undefined
+                        "
+                    >
                         <div class="p-3">
-                            <p>TeamInvitations</p>
+                            <TeamInvitations />
                         </div>
                     </Accordion>
                 </div>

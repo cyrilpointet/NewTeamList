@@ -15,10 +15,10 @@ export interface Team {
 
 export interface Invitation {
     id: string;
-    fromTeam: boolean;
+    is_from_team: boolean;
     createdAt: string;
     updatedAt: string;
-    email: string;
+    user_email: string;
 }
 
 export interface UserInvitation extends Invitation {

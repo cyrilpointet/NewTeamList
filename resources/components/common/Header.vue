@@ -15,7 +15,13 @@ const userStore = useUserStore();
                     <ButtonIcon icon="home" class="hover:bg-primary-light" />
                 </RouterLink>
                 <RouterLink v-if="userStore.isLogged" to="/account">
-                    <Badge :value="0">
+                    <Badge
+                        :value="
+                            userStore.hasInvitations
+                                ? userStore.user.invitations.length
+                                : undefined
+                        "
+                    >
                         <ButtonIcon
                             icon="person"
                             class="hover:bg-primary-light"
