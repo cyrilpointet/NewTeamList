@@ -38,12 +38,8 @@ async function leaveTeam() {
 </script>
 
 <template>
-    <div
-        class="container mx-auto pt-6 px-4 flex-1 flex flex-col gap-6 overflow-hidden"
-    >
-        <div
-            class="mx-auto flex items-center justify-center gap-4 bg-white rounded shadow py-4 px-6 max-w-full overflow-hidden"
-        >
+    <div class="container mx-auto px-4 md:px-0">
+        <Card class="mx-auto mt-6 flex items-center justify-center gap-4">
             <h1
                 class="overflow-hidden whitespace-nowrap text-ellipsis text-center text-2xl font-bold"
             >
@@ -64,11 +60,11 @@ async function leaveTeam() {
                     @click="showSetting = !showSetting"
                 />
             </Badge>
-        </div>
+        </Card>
 
         <Transition name="turn" mode="out-in">
             <div v-if="!showSetting">
-                <Card>
+                <Card class="mt-6">
                     <TeamPosts />
                 </Card>
                 <Card class="mt-6">
@@ -78,7 +74,7 @@ async function leaveTeam() {
 
             <div
                 v-else-if="teamStore.team"
-                class="grid gap-4 grid-cols-1 lg:grid-cols-2"
+                class="grid gap-4 grid-cols-1 lg:grid-cols-2 mt-6"
             >
                 <div v-if="teamStore.isUserManager">
                     <Accordion

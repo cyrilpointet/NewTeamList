@@ -16,11 +16,8 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-    <div class="container mx-auto">
-        <div
-            v-if="!userStore.isLogged"
-            class="flex justify-center px-4 md:px-0"
-        >
+    <div class="container mx-auto px-4 md:px-0">
+        <div v-if="!userStore.isLogged" class="flex justify-center">
             <Card class="mt-6 flex-1 max-w-md">
                 <Login v-if="hasAccount" />
                 <Register v-else />

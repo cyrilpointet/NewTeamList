@@ -16,11 +16,17 @@ eventBus.$on("show-snackbar", (values: SnackbarProps) => {
 </script>
 
 <template>
-    <div class="fixed inset-0 bg-gray-100 overflow-hidden flex flex-col">
+    <div class="fixed inset-0 overflow-hidden flex flex-col">
         <Header />
-        <suspense>
-            <RouterView />
-        </suspense>
+        <div class="flex-1 bg-gray-100 overflow-y-auto relative">
+            <router-view v-slot="{ Component, route }">
+                <Transition name="scale-slide">
+                    <div :key="route.name">
+                        <component :is="Component"></component>
+                    </div>
+                </Transition>
+            </router-view>
+        </div>
     </div>
     <Snackbar :values="snackbarValues" />
 </template>
