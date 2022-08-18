@@ -51,4 +51,17 @@ class User extends Authenticatable
             'user_id',
             'team_id')->withPivot('admin')->using('App\Models\TeamUsersPivot');
     }
+
+
+    public function invitations()
+    {
+        return $this->hasMany(
+            Invitation::class,
+            'user_email',
+            'email'
+        )->where(
+            'is_from_team',
+            true
+        );
+    }
 }

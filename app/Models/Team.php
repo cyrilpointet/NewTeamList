@@ -30,4 +30,14 @@ class Team extends Model
             'team_id',
             'user_id')->withPivot('admin')->using('App\Models\TeamUsersPivot');
     }
+
+
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class)
+            ->where(
+            'is_from_team',
+            false
+        );
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -15,6 +16,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/name/{name}', [UserController::class, 'getUserByNameOrEmail']);
     Route::get('/team/name/{name}', [TeamController::class, 'getTeamsByName']);
     Route::post('/team', [TeamController::class, 'create']);
+    Route::post('/user/invitation', [InvitationController::class, 'createFromUser']);
+    Route::put('/user/invitation/{id}', [InvitationController::class, 'manageTeamInvitation']);
 });
 
 Route::middleware(['auth:sanctum', 'isTeamMember'])->group(function () {
@@ -27,4 +30,6 @@ Route::middleware(['auth:sanctum', 'isTeamAdmin'])->group(function () {
     Route::put('/team/{id}/admin', [TeamController::class, 'manageAdmin']);
     Route::delete('/team/{id}/member', [TeamController::class, 'removeMember']);
     Route::delete('/team/{id}', [TeamController::class, 'delete']);
+    Route::post('/team/{id}/invitation', [InvitationController::class, 'createFromTeam']);
+    Route::put('/team/{id}/invitation', [InvitationController::class, 'manageUserInvitation']);
 });

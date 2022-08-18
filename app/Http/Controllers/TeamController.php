@@ -37,6 +37,7 @@ class TeamController extends Controller
 
         $team->members()->attach($user->id, ['admin' => true]);
         $team->members;
+        $team->invitations;
 
         return $team;
     }
@@ -54,6 +55,7 @@ class TeamController extends Controller
             ], 404);
         }
         $team->members;
+        $team->invitations;
 
         return response($team, 200);
     }
@@ -94,6 +96,7 @@ class TeamController extends Controller
         $team->save();
 
         $team->members;
+        $team->invitations;
 
         return response($team, 200);
     }
@@ -142,6 +145,7 @@ class TeamController extends Controller
 
         $team = Team::find($id);
         $team->members;
+        $team->invitations;
 
         return response($team, 200);
     }
@@ -180,6 +184,7 @@ class TeamController extends Controller
         $team->members()->detach($request->id);
 
         $team->members;
+        $team->invitations;
 
         return response($team, 200);
     }

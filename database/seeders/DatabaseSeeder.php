@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         DB::table('teams_users')->truncate();
         $this->call(UsersTableSeeder::class);
         $this->call(TeamsTableSeeder::class);
+        $this->call(InvitationsTableSeeder::class);
         Schema::enableForeignKeyConstraints();
     }
 }
