@@ -5,6 +5,7 @@ import Login from "@/components/user/Login.vue";
 import Register from "@/components/user/Register.vue";
 import Teams from "@/components/user/Teams.vue";
 import TeamCreate from "@/components/team/TeamCreate.vue";
+import TeamFinder from "@/components/team/TeamFinder.vue";
 
 const userStore = useUserStore();
 const hasAccount = ref(false);
@@ -41,6 +42,9 @@ onBeforeMount(async () => {
             </Card>
             <Card class="mt-4">
                 <TeamCreate />
+            </Card>
+            <Card class="mt-4">
+                <TeamFinder />
             </Card>
         </div>
     </div>

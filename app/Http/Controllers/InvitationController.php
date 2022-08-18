@@ -23,9 +23,7 @@ class InvitationController extends Controller
 
         $test = Invitation::where('team_id', '=', $id)->where('user_email', '=', $request->email)->get();
         if (0 !== count($test)) {
-            return response([
-                "message" => "Invitation alreay exist"
-            ], 403);
+            return response("Une invitation est déjà en cours", 403);
         }
 
         $user = User::where('email', '=', $request->email)->first();
@@ -146,9 +144,7 @@ class InvitationController extends Controller
 
         $test = Invitation::where('team_id', '=', $request->id)->where('user_email', '=', $user->email)->get();
         if (0 !== count($test)) {
-            return response([
-                "message" => "Invitation already exist"
-            ], 403);
+            return response("Une invitation est déjà en cours", 403);
         }
 
         $invitation = Invitation::create([

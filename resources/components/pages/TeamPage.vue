@@ -8,6 +8,7 @@ import TeamEdit from "@/components/team/TeamEdit.vue";
 import TeamDelete from "@/components/team/TeamDelete.vue";
 import TeamMembers from "@/components/team/TeamMembers.vue";
 import TeamInvitations from "@/components/team/TeamInvitations.vue";
+import UserFinder from "@/components/user/UserFinder.vue";
 
 const teamStore = useTeamStore();
 
@@ -36,7 +37,7 @@ async function leaveTeam() {
 
 <template>
     <div
-        class="container mx-auto pt-6 px-4 md:px-0 flex-1 flex flex-col gap-6 overflow-hidden"
+        class="container mx-auto pt-6 px-4 flex-1 flex flex-col gap-6 overflow-hidden"
     >
         <div
             class="mx-auto flex items-center justify-center gap-4 bg-white rounded shadow py-4 px-6 max-w-full overflow-hidden"
@@ -91,7 +92,7 @@ async function leaveTeam() {
                 <div v-if="teamStore.isUserManager">
                     <Accordion title="Partager">
                         <div class="p-3">
-                            <p>FindMember</p>
+                            <UserFinder />
                         </div>
                     </Accordion>
                 </div>

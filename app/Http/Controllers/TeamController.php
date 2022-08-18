@@ -70,9 +70,10 @@ class TeamController extends Controller
      * Get teams by name
      * @bodyParam name string required The team's name
      */
-    public function getTeamsByName(Request $request, $name)
+    public function getTeamsByName(Request $request)
     {
-        return Team::where('name', 'like', '%' . $name . '%')->get();
+
+        return Team::where('name', 'like', '%' . $request->query('name') . '%')->get();
     }
 
     /**
