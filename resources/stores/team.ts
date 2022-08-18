@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ApiConsumer } from "@/services/ApiConsumer";
 import { useUserStore } from "@/stores/user";
-import type { Invitation, Team, User } from "@/stores/storeTypes";
+import type { Invitation, Team, User, Post } from "@/stores/storeTypes";
 
 interface TeamMember extends User {
     pivot: {
@@ -12,6 +12,7 @@ interface TeamMember extends User {
 interface StoreTeam extends Team {
     members: TeamMember[];
     invitations: Invitation[];
+    posts: Post[];
 }
 
 type TeamRootState = {
@@ -110,6 +111,17 @@ export const useTeamStore = defineStore({
             await ApiConsumer.delete(`user/team/${this.team.id}`);
             await userStore.refreshUser();
             this.team = null;
+        },
+        async addPost(title: string) {
+            if (!this.team) return;
+            await ApiConsumer.post(`team/${this.team.id}/post`, {
+                title,
+            });
+            await this.refreshTeam();
+        },
+        async deletePost(postId: string) {
+            await ApiConsumer.delete(`post/${postId}`);
+            await this.refreshTeam();
         },
     },
 });

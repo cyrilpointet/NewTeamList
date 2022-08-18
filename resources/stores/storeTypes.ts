@@ -21,6 +21,15 @@ export interface Invitation {
     user_email: string;
 }
 
+export interface Post {
+    id: string;
+    title: string;
+    createdAt: string;
+    updatedAt: string;
+    user_id: string;
+    team_id: string;
+}
+
 export interface UserInvitation extends Invitation {
     team: Team;
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { helpers, required } from "@vuelidate/validators";
 import { ERROR_MSG } from "@/constantes/errorMsg";
 import useVuelidate from "@vuelidate/core";
@@ -38,6 +38,10 @@ function isEmail(text: string) {
 function closeModal() {
     userToAdd.value = null;
 }
+
+watch(state.value, () => {
+    users.value = null;
+});
 
 async function submit() {
     if (v$.value.$invalid) return;

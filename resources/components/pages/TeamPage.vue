@@ -9,6 +9,8 @@ import TeamDelete from "@/components/team/TeamDelete.vue";
 import TeamMembers from "@/components/team/TeamMembers.vue";
 import TeamInvitations from "@/components/team/TeamInvitations.vue";
 import UserFinder from "@/components/user/UserFinder.vue";
+import TeamPosts from "@/components/team/TeamPosts.vue";
+import PostCreate from "@/components/post/PostCreate.vue";
 
 const teamStore = useTeamStore();
 
@@ -67,7 +69,10 @@ async function leaveTeam() {
         <Transition name="turn" mode="out-in">
             <div v-if="!showSetting">
                 <Card>
-                    <p>coucou</p>
+                    <TeamPosts />
+                </Card>
+                <Card class="mt-6">
+                    <PostCreate />
                 </Card>
             </div>
 
