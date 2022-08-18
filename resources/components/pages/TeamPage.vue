@@ -37,18 +37,20 @@ async function leaveTeam() {
     <div
         class="container mx-auto pt-6 px-4 md:px-0 flex-1 flex flex-col gap-6 overflow-hidden"
     >
-        <div class="flex justify-between md:justify-start items-center gap-8">
-            <div
-                class="flex items-center justify-center gap-4 bg-white rounded shadow py-2 px-6"
+        <div
+            class="mx-auto flex items-center justify-center gap-4 bg-white rounded shadow py-4 px-6 max-w-full overflow-hidden"
+        >
+            <h1
+                class="overflow-hidden whitespace-nowrap text-ellipsis text-center text-2xl font-bold"
             >
-                <h1 class="text-center text-2xl font-bold mx-6">
-                    {{ teamStore.team?.name }}
-                </h1>
-            </div>
-            <Badge :value="0">
+                {{ teamStore.team?.name }}
+            </h1>
+
+            <Badge :value="undefined">
                 <ButtonIcon
+                    size="sm"
                     class="bg-primary text-primary-contrast shadow"
-                    :icon="showSetting ? 'list' : 'settings'"
+                    :icon="showSetting ? 'list' : 'edit'"
                     @click="showSetting = !showSetting"
                 />
             </Badge>
