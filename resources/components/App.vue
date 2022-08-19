@@ -14,6 +14,12 @@ eventBus.$on("show-snackbar", (values: SnackbarProps) => {
         snackbarValues.value = null;
     }, snackbarValues.value.values?.delay || 3000);
 });
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/sw.js");
+    });
+}
 </script>
 
 <template>

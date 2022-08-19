@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://0.0.0.0/api/";
+const BASE_URL = "/api/";
 
 class ApiConsumer {
     private headers: { Accept: string; Authorization?: string };
