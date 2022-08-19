@@ -35,16 +35,24 @@ export const useUserStore = defineStore({
     },
     actions: {
         async refreshUser() {
-            const user = (await ApiConsumer.get("user")) as UserStore;
-            this.user = user;
+            const data = (await ApiConsumer.get("user")) as {
+                user: UserStore;
+                token: string;
+            };
+            this.user = data.user;
+            ApiConsumer.setToken(data.token);
         },
         async autoLogin() {
             if (this.user) return;
             try {
                 if (localStorage.getItem("token")) {
                     ApiConsumer.setToken(localStorage.getItem("token") || "");
-                    const user = (await ApiConsumer.get("user")) as UserStore;
-                    this.user = user;
+                    const data = (await ApiConsumer.get("user")) as {
+                        user: UserStore;
+                        token: string;
+                    };
+                    this.user = data.user;
+                    ApiConsumer.setToken(data.token);
                 }
             } catch (e) {
                 this.user = null;

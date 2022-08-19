@@ -100,14 +100,21 @@ class UserController extends Controller
     }
 
     /**
-     * Get a user by its token
+     * Get a user by its token and refresh token
      */
     public function show(Request $request)
     {
         $user = $request->user();
         $user->teams;
         $user->invitations;
-        return $user;
+
+        $token = $user->createToken('event_manager')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+        return response($response, 201);
     }
 
     /**
