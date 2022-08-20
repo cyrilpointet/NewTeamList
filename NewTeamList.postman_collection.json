@@ -1,0 +1,623 @@
+{
+	"info": {
+		"_postman_id": "6b961888-142f-4567-a095-47c7c695d7e1",
+		"name": "NewTeamList",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4556704"
+	},
+	"item": [
+		{
+			"name": "user login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"user1@user.user\",\r\n    \"password\": \"user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/user/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token);",
+							"postman.setEnvironmentVariable(\"user_email\", jsonData.user.email);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"toto\",\r\n    \"email\": \"toto@toto.toto\",\r\n    \"password\": \"toto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/user/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user show",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user get users by name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/name/user",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"name",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team get multiples by name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Testgro\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/team?name=test",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Leave Team",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/team/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"team",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team Manage admin",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 3,\n    \"admin\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/team/1/admin",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team",
+						"1",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team remove member",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/team/1/member",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team",
+						"1",
+						"member"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"team_id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Test Post Team\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/team",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team Show by Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/team/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"New Team Name\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/team/{{team_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team",
+						"{{team_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/team/{{team_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team",
+						"{{team_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User send invitation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/user/invitation",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"invitation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User manage invitation",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/user/invitation/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"invitation",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team Send invitation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user9@user.user\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/team/1/invitation",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team",
+						"1",
+						"invitation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team Manage invitation",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 2,\n    \"status\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/team/1/invitation",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team",
+						"1",
+						"invitation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"post_id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Title Test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/team/1/post",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"team",
+						"1",
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/post/{{post_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post",
+						"{{post_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
