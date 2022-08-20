@@ -7,6 +7,7 @@ import type { SnackbarProps } from "@/components/common/Snackbar.vue";
 import bgMobile from "@/assets/images/backgroundImage.png";
 
 const snackbarValues = ref<SnackbarProps | null>(null);
+const deferredPrompt = ref<Event | null>(null);
 
 eventBus.$on("show-snackbar", (values: SnackbarProps) => {
     snackbarValues.value = values;
@@ -20,6 +21,33 @@ if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/sw.js");
     });
 }
+
+window.addEventListener("beforeinstallprompt", (e) => {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    e.preventDefault();
+    // If in mobile mode, stash the event so it can be triggered later.
+    if (window.innerHeight > window.innerWidth) {
+        deferredPrompt.value = e;
+    }
+});
+
+const installPwa = () => {
+    if (!deferredPrompt.value) return;
+    deferredPrompt.value.prompt(); // eslint-disable-line
+    // Wait for the user to respond to the prompt
+    deferredPrompt.value.userChoice.then((choiceResult) => { // eslint-disable-line
+        if (deferredPrompt.value) {
+            eventBus.$emit("show-snackbar", {
+                text: "TeamList a été installé sur cet appareil",
+            });
+        }
+        deferredPrompt.value = null;
+    });
+};
+
+const declineInstallPwa = () => {
+    deferredPrompt.value = null;
+};
 </script>
 
 <template>
@@ -39,4 +67,17 @@ if ("serviceWorker" in navigator) {
         </div>
     </div>
     <Snackbar :values="snackbarValues" />
+
+    <Modal :on-close="declineInstallPwa" :is-open="deferredPrompt">
+        <div class="w-64">
+            <p class="text-center font-bold">
+                Voulez-vous installer l'appication TeamList sur cet appareil ?
+            </p>
+            <p class="text-center italic">(Recommandé)</p>
+            <div class="mt-6 flex justify-between">
+                <Button @click="declineInstallPwa">Plus tard</Button>
+                <Button @click="installPwa">Installer</Button>
+            </div>
+        </div>
+    </Modal>
 </template>

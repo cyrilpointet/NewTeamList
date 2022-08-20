@@ -41,7 +41,7 @@ async function leaveTeam() {
     <div class="container mx-auto px-4 md:px-0">
         <Card class="mx-auto mt-6 flex items-center justify-center gap-4">
             <h1
-                class="overflow-hidden whitespace-nowrap text-ellipsis text-center text-2xl font-bold"
+                class="text-center flex-1 overflow-hidden whitespace-nowrap text-ellipsis text-center text-2xl font-bold"
             >
                 {{ teamStore.team?.name }}
             </h1>
@@ -54,9 +54,8 @@ async function leaveTeam() {
                 "
             >
                 <ButtonIcon
-                    size="sm"
-                    class="bg-primary text-primary-contrast shadow"
-                    :icon="showSetting ? 'list' : 'edit'"
+                    class="bg-primary text-primary-contrast"
+                    :icon="showSetting ? 'list' : 'settings'"
                     @click="showSetting = !showSetting"
                 />
             </Badge>
