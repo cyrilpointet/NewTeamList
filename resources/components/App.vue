@@ -5,7 +5,7 @@ import Header from "@/components/common/Header.vue";
 import { eventBus } from "@/services/eventBus";
 import type { SnackbarProps } from "@/components/common/Snackbar.vue";
 import bgMobile from "@/assets/images/backgroundImage.png";
-import { FcmManager, startFcm } from "@/services/firebase";
+import { startFcm } from "@/services/firebase";
 
 const snackbarValues = ref<SnackbarProps | null>(null);
 const deferredPrompt = ref<Event | null>(null);
