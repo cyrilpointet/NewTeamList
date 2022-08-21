@@ -17,7 +17,6 @@ const messaging = getMessaging(app);
 export const startFcm = async () => {
     console.log("start");
     if (!localStorage.getItem("fcmToken")) {
-        console.log("!fcmToken");
         const permission = await Notification.requestPermission();
         if (permission !== "granted") return;
         try {
@@ -38,6 +37,7 @@ export const startFcm = async () => {
 
 export const listenFcm = () => {
     console.log("listenFcm");
+
     onMessage(messaging, (payload) => {
         console.log("Message received. ", payload);
 
