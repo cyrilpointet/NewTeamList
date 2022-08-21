@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
+use App\Http\Traits\WebNotificationTrait;
 /**
  * @group Team management
  *
@@ -13,6 +12,8 @@ use Illuminate\Support\Facades\DB;
  */
 class TeamController extends Controller
 {
+    use WebNotificationTrait;
+
     private function populateTeam($team) {
         $team->members;
         $team->invitations;
@@ -100,10 +101,21 @@ class TeamController extends Controller
                 "message" => "Unknown team"
             ], 404);
         }
+        $oldname = $team->name;
         $team->name = $request->name;
         $team->save();
 
         $this->populateTeam($team);
+
+        $FcmToken = [];
+        foreach ($team->member as $member) {
+            if ($member->device_key !== null) {
+                $FcmToken[] = $member->device_key;
+            }
+        }
+        if (count($FcmToken) > 0) {
+            $this->sendWebNotification($FcmToken, 'Nouveau nom de liste', $oldname . ' a été renommé en ' . $request->name);
+        }
 
         return response($team, 200);
     }

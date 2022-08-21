@@ -13,6 +13,7 @@ Route::post('/user/register', [UserController::class, 'register']);
 Route::post('/user/login', [UserController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('user/store_device_key', [UserController::class, 'storeDeviceKey']);
     Route::get('/user', [UserController::class, 'show']);
     Route::get('/user/name/{name}', [UserController::class, 'getUserByNameOrEmail']);
     Route::get('/team', [TeamController::class, 'getTeamsByName']);

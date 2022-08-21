@@ -5,6 +5,7 @@ import Header from "@/components/common/Header.vue";
 import { eventBus } from "@/services/eventBus";
 import type { SnackbarProps } from "@/components/common/Snackbar.vue";
 import bgMobile from "@/assets/images/backgroundImage.png";
+import { FcmManager, startFcm } from "@/services/firebase";
 
 const snackbarValues = ref<SnackbarProps | null>(null);
 const deferredPrompt = ref<Event | null>(null);
@@ -21,6 +22,8 @@ if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/sw.js");
     });
 }
+
+startFcm();
 
 window.addEventListener("beforeinstallprompt", (e) => {
     // Prevent Chrome 67 and earlier from automatically showing the prompt
