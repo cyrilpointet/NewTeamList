@@ -1,16 +1,16 @@
-import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-import eslintPlugin from 'vite-plugin-eslint';
-import vue from '@vitejs/plugin-vue';
+import { defineConfig } from "vite";
+import laravel from "laravel-vite-plugin";
+import eslintPlugin from "vite-plugin-eslint";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
     server: {
         //https: true,
-        host: '0.0.0.0'
+        host: "0.0.0.0",
     },
     plugins: [
         laravel({
-            input: ['resources/ts/app.tsx'],
+            input: ["resources/ts/app.tsx"],
             refresh: true,
         }),
         eslintPlugin(),
@@ -35,8 +35,8 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': '/resources',
-            '@common': '/resources/components/common'
+            "@": "/resources",
+            "@common": "/resources/components/common",
         },
     },
 });
