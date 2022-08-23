@@ -73,7 +73,7 @@ const router = createRouter({
         {
             path: "/team/:id",
             name: "team",
-            component: () => TeamPage,
+            component: TeamPage,
             beforeEnter: [autoLog, preloadTeam],
         },
     ],
