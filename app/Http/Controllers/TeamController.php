@@ -108,7 +108,7 @@ class TeamController extends Controller
         $this->populateTeam($team);
 
         $FcmToken = [];
-        foreach ($team->member as $member) {
+        foreach ($team->members as $member) {
             if ($member->device_key !== null) {
                 $FcmToken[] = $member->device_key;
             }
