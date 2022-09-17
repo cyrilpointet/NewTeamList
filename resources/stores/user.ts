@@ -80,6 +80,7 @@ export const useUserStore = defineStore({
         logout() {
             this.user = null;
             ApiConsumer.removeToken();
+            localStorage.removeItem("fcmToken");
         },
     },
 });
