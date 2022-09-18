@@ -83,7 +83,8 @@ export const useUserStore = defineStore({
             ApiConsumer.setToken(data.token);
             await FirebaseManager.saveFcmToken();
         },
-        logout() {
+        async logout() {
+            await FirebaseManager.clearFcmToken();
             this.user = null;
             ApiConsumer.removeToken();
             localStorage.removeItem("fcmToken");

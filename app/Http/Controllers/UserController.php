@@ -101,18 +101,8 @@ class UserController extends Controller
 
     public function storeDeviceKey(Request $request)
     {
-        try {
-            $request->validate([
-                'deviceKey' => 'required',
-            ]);
-        } catch (\Exception $e) {
-            return response([
-                'message' => ['Invalid or missing fields']
-            ], 401);
-        }
-
         $user = $request->user();
-        $user->update(['device_key'=>$request->deviceKey]);
+        $user->update(['device_key'=>$request->deviceKey ?: null]);
         return response()->json(['Token successfully stored.']);
     }
 

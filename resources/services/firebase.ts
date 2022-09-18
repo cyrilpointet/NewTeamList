@@ -27,12 +27,19 @@ export class FirebaseManager {
     public static async saveFcmToken() {
         if (!FirebaseManager.messaging) return;
         const fcmToken = await getToken(FirebaseManager.messaging, {
+            // todo hide key
             vapidKey:
                 "BLoWMmusb8bpzIZ9YJ37Jw9K_aTc-iy_ZMoAnHbjjYR01XAsP-uAIygCGuoyFn18gDnyb8E2mV4kMC1ZBKMHFdU",
         });
         console.log(fcmToken);
         await ApiConsumer.post("user/store_device_key", {
             deviceKey: fcmToken,
+        });
+    }
+
+    public static async clearFcmToken() {
+        await ApiConsumer.post("user/store_device_key", {
+            deviceKey: null,
         });
     }
 
