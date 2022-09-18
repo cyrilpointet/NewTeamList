@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ApiConsumer } from "@/services/ApiConsumer";
 import type { Invitation, User } from "@/stores/storeTypes";
 import { Team } from "@/stores/storeTypes";
+import { FirebaseManager } from "@/services/firebase";
 
 interface UserTeam extends Team {
     pivot: {
@@ -46,13 +47,16 @@ export const useUserStore = defineStore({
             if (this.user) return;
             try {
                 if (localStorage.getItem("token")) {
-                    ApiConsumer.setToken(localStorage.getItem("token") || "");
+                    await ApiConsumer.setToken(
+                        localStorage.getItem("token") || ""
+                    );
                     const data = (await ApiConsumer.get("user")) as {
                         user: UserStore;
                         token: string;
                     };
                     this.user = data.user;
-                    ApiConsumer.setToken(data.token);
+                    await ApiConsumer.setToken(data.token);
+                    await FirebaseManager.saveFcmToken();
                 }
             } catch (e) {
                 this.user = null;
@@ -66,7 +70,8 @@ export const useUserStore = defineStore({
                 password,
             })) as { user: UserStore; token: string };
             this.user = data.user;
-            ApiConsumer.setToken(data.token);
+            await ApiConsumer.setToken(data.token);
+            await FirebaseManager.saveFcmToken();
         },
         async register(name: string, email: string, password: string) {
             const data = (await ApiConsumer.post("user/register", {
@@ -76,6 +81,7 @@ export const useUserStore = defineStore({
             })) as { user: User; token: string };
             this.user = data.user;
             ApiConsumer.setToken(data.token);
+            await FirebaseManager.saveFcmToken();
         },
         logout() {
             this.user = null;

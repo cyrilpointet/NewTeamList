@@ -5,7 +5,7 @@ import Header from "@/components/common/Header.vue";
 import { eventBus } from "@/services/eventBus";
 import type { SnackbarProps } from "@/components/common/Snackbar.vue";
 import bgMobile from "@/assets/images/backgroundImage.png";
-import { startFcm } from "@/services/firebase";
+import { FirebaseManager } from "@/services/firebase";
 
 const snackbarValues = ref<SnackbarProps | null>(null);
 const deferredPrompt = ref<Event | null>(null);
@@ -20,7 +20,8 @@ eventBus.$on("show-snackbar", (values: SnackbarProps) => {
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
         navigator.serviceWorker.register("/sw.js").then(async () => {
-            startFcm();
+            await FirebaseManager.start();
+            FirebaseManager.listenMessage();
         });
     });
 }

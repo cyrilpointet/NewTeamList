@@ -1,34 +1,49 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {
+    getMessaging,
+    getToken,
+    onMessage,
+    Messaging,
+} from "firebase/messaging";
 import { ApiConsumer } from "@/services/ApiConsumer";
 
-export const startFcm = async () => {
-    const firebaseConfig = {
-        apiKey: "AIzaSyCmquMEn8N7vRFUbYQoOc-CCoIQ1uPFNmE",
-        authDomain: "newteamlist.firebaseapp.com",
-        projectId: "newteamlist",
-        storageBucket: "newteamlist.appspot.com",
-        messagingSenderId: "33752955863",
-        appId: "1:33752955863:web:f3a260bc9cfacc9bede992",
-    };
+export class FirebaseManager {
+    static messaging?: Messaging;
 
-    const firebaseApp = initializeApp(firebaseConfig);
-    const messaging = getMessaging(firebaseApp);
-
-    const fcmToken = await getToken(messaging, {
-        vapidKey:
-            "BLoWMmusb8bpzIZ9YJ37Jw9K_aTc-iy_ZMoAnHbjjYR01XAsP-uAIygCGuoyFn18gDnyb8E2mV4kMC1ZBKMHFdU",
-    });
-    console.log(fcmToken);
-    await ApiConsumer.post("user/store_device_key", {
-        deviceKey: fcmToken,
-    });
-
-    onMessage(messaging, (payload) => {
-        const title = payload.notification.title;
-        const options = {
-            body: payload.notification.body,
+    public static async start() {
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmquMEn8N7vRFUbYQoOc-CCoIQ1uPFNmE",
+            authDomain: "newteamlist.firebaseapp.com",
+            projectId: "newteamlist",
+            storageBucket: "newteamlist.appspot.com",
+            messagingSenderId: "33752955863",
+            appId: "1:33752955863:web:f3a260bc9cfacc9bede992",
         };
-        new Notification(title, options);
-    });
-};
+
+        const firebaseApp = initializeApp(firebaseConfig);
+        FirebaseManager.messaging = getMessaging(firebaseApp);
+    }
+
+    public static async saveFcmToken() {
+        if (!FirebaseManager.messaging) return;
+        const fcmToken = await getToken(FirebaseManager.messaging, {
+            vapidKey:
+                "BLoWMmusb8bpzIZ9YJ37Jw9K_aTc-iy_ZMoAnHbjjYR01XAsP-uAIygCGuoyFn18gDnyb8E2mV4kMC1ZBKMHFdU",
+        });
+        console.log(fcmToken);
+        await ApiConsumer.post("user/store_device_key", {
+            deviceKey: fcmToken,
+        });
+    }
+
+    public static listenMessage(callback?: () => void) {
+        onMessage(FirebaseManager.messaging, (payload) => {
+            const title = payload.notification.title;
+            const options = {
+                body: payload.notification.body,
+            };
+            new Notification(title, options);
+        });
+        callback?.();
+    }
+}
