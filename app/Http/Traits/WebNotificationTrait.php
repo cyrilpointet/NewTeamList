@@ -8,7 +8,7 @@ trait WebNotificationTrait {
         $url = 'https://fcm.googleapis.com/fcm/send';
         //$FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
 
-        $serverKey = 'server key goes here';
+        $serverKey = env('FIREBASE_KEY');
 
         $data = [
             "registration_ids" => $FcmToken,
