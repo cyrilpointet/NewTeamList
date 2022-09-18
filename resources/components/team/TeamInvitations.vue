@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
-import type { TeamInvitation, UserInvitation } from "@/stores/storeTypes";
+import type { TeamInvitation } from "@/stores/storeTypes";
 import { ApiConsumer } from "@/services/ApiConsumer";
 import { eventBus } from "@/services/eventBus";
 import { errorHelper } from "@/helpers/errorHelper";
-import router from "@/router";
 import { useTeamStore } from "@/stores/team";
 
 const userStore = useUserStore();

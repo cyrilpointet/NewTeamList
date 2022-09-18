@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUpdated, onMounted, nextTick } from "vue";
+import { ref, nextTick } from "vue";
 import { eventBus } from "@/services/eventBus";
 
 const props = defineProps<{

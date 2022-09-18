@@ -19,11 +19,11 @@ eventBus.$on("show-snackbar", (values: SnackbarProps) => {
 
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
-        navigator.serviceWorker.register("/sw.js");
+        navigator.serviceWorker.register("/sw.js").then(async () => {
+            startFcm();
+        });
     });
 }
-
-startFcm();
 
 window.addEventListener("beforeinstallprompt", (e) => {
     // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -74,7 +74,7 @@ const declineInstallPwa = () => {
     <Modal :on-close="declineInstallPwa" :is-open="deferredPrompt">
         <div class="w-64">
             <p class="text-center font-bold">
-                Voulez-vous installer l'appication TeamList sur cet appareil ?
+                Voulez-vous installer l'application TeamList sur cet appareil ?
             </p>
             <p class="text-center italic">(Recommandé)</p>
             <div class="mt-6 flex justify-between">
