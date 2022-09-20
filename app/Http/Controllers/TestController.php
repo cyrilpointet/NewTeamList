@@ -4,49 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Kutia\Larafirebase\Facades\Larafirebase;
+
 
 class TestController extends Controller
 {
-    public function test()
+    public function teste()
     {
-        $url = 'https://fcm.googleapis.com/fcm/send';
         $FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
 
-        $serverKey = 'BLoWMmusb8bpzIZ9YJ37Jw9K_aTc-iy_ZMoAnHbjjYR01XAsP-uAIygCGuoyFn18gDnyb8E2mV4kMC1ZBKMHFdU:K3-V4oyF7JKBhh-zu10GKdnd1ehrfHK_ZWC8jp7Chzc';
+        return Larafirebase::withTitle('Test Title')
+            ->withBody('Test body')
+            ->withImage('https://firebase.google.com/images/social.png')
+            ->withIcon('https://seeklogo.com/images/F/firebase-logo-402F407EE0-seeklogo.com.png')
+            ->withSound('default')
+            ->withClickAction('https://www.google.com')
+            ->withPriority('high')
+            ->withAdditionalData([
+                'color' => '#rrggbb',
+                'badge' => 0,
+            ])
+            ->sendNotification($FcmToken);
 
-        $data = [
-            "registration_ids" => $FcmToken,
-            "notification" => [
-                "title" => "title",
-                "body" => "body",
-            ]
-        ];
-        $encodedData = json_encode($data);
+    }
 
-        $headers = [
-            'Authorization: Bearer ' . $serverKey,
-            'Content-Type: application/json',
-        ];
+    public function test()
+    {
+        $FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
 
-        $ch = curl_init();
+        return Larafirebase::withTitle('Test Title')
+            ->withBody('Test body')
+            ->withAdditionalData([
+                'toto' => 'coucou',
+                'pouet' => 'coin coin',
+            ])
+            ->sendMessage($FcmToken);
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        // Disabling SSL Certificate support temporarly
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
-        // Execute post
-        $result = curl_exec($ch);
-        if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
-        }
-        // Close connection
-        curl_close($ch);
-
-        return response()->json([$result]);
     }
 }

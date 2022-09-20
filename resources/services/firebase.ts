@@ -45,12 +45,12 @@ export class FirebaseManager {
 
     public static listenMessage(callback?: () => void) {
         onMessage(FirebaseManager.messaging, (payload) => {
-            const title = payload.notification.title;
+            const title = payload.data.title;
             const options = {
-                body: payload.notification.body,
+                body: payload.data.body,
             };
             new Notification(title, options);
+            callback?.();
         });
-        callback?.();
     }
 }

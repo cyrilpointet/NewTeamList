@@ -25,11 +25,10 @@ messaging.onBackgroundMessage((payload) => {
         payload
     );
     // Customize notification here
-    const notificationTitle = "firebase sw Title";
+    const notificationTitle = payload.data.toto;
     const notificationOptions = {
-        body: "firebase sw",
-        icon: "/firebase-logo.png",
+        body: payload.data.pouet,
     };
 
-    //self.registration.showNotification(notificationTitle, notificationOptions);
+    self.registration.showNotification(notificationTitle, notificationOptions);
 });
