@@ -6,6 +6,7 @@ import {
     Messaging,
 } from "firebase/messaging";
 import { ApiConsumer } from "@/services/ApiConsumer";
+import { useTeamStore } from "@/stores/team";
 
 export class FirebaseManager {
     static messaging?: Messaging;
@@ -31,7 +32,6 @@ export class FirebaseManager {
             vapidKey:
                 "BLoWMmusb8bpzIZ9YJ37Jw9K_aTc-iy_ZMoAnHbjjYR01XAsP-uAIygCGuoyFn18gDnyb8E2mV4kMC1ZBKMHFdU",
         });
-        console.log(fcmToken);
         await ApiConsumer.post("user/store_device_key", {
             deviceKey: fcmToken,
         });
@@ -43,14 +43,31 @@ export class FirebaseManager {
         });
     }
 
-    public static listenMessage(callback?: () => void) {
-        onMessage(FirebaseManager.messaging, (payload) => {
-            const title = payload.data.title;
-            const options = {
-                body: payload.data.body,
-            };
-            new Notification(title, options);
-            callback?.();
+    public static listenMessage() {
+        onMessage(FirebaseManager.messaging, async (payload) => {
+            if (payload.data.title) {
+                new Notification(payload.data.title, {
+                    body: payload.data.body,
+                });
+            }
+
+            if (payload.data.item && payload.data.id) {
+                await FirebaseManager.manageMessage(
+                    payload.data.item,
+                    payload.data.id
+                );
+            }
         });
+    }
+
+    private static async manageMessage(item: string, id: string) {
+        const teamStore = useTeamStore();
+        switch (item) {
+            case "TEAM":
+                if (parseInt(id) === teamStore.team?.id) {
+                    await teamStore.refreshTeam();
+                }
+                break;
+        }
     }
 }

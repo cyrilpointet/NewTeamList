@@ -6,6 +6,7 @@ use App\Models\Invitation;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Kutia\Larafirebase\Facades\Larafirebase;
 
 class InvitationController extends Controller
 {
@@ -108,6 +109,19 @@ class InvitationController extends Controller
 
         if (true === $request->status) {
             $team->members()->attach($user->id, ['admin' => false]);
+            $FcmToken = [];
+            foreach ($team->members as $member) {
+                if ($member->device_key !== null) {
+                    $FcmToken[] = $member->device_key;
+                }
+            }
+            Larafirebase::withTitle('Teamlist: nouveau membre')
+                ->withBody($user->name . ' a rejoint ' . $team->name)
+                ->withAdditionalData([
+                    'item' => 'TEAM',
+                    'id' => $team->id,
+                ])
+                ->sendMessage($FcmToken);
         }
         $invitation->delete();
 

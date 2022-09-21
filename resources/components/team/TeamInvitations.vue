@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
 import type { TeamInvitation } from "@/stores/storeTypes";
 import { ApiConsumer } from "@/services/ApiConsumer";
@@ -7,7 +6,6 @@ import { eventBus } from "@/services/eventBus";
 import { errorHelper } from "@/helpers/errorHelper";
 import { useTeamStore } from "@/stores/team";
 
-const userStore = useUserStore();
 const teamStore = useTeamStore();
 
 const loading = ref(false);

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use App\Http\Traits\WebNotificationTrait;
+use Kutia\Larafirebase\Facades\Larafirebase;
+
 /**
  * @group Team management
  *
@@ -12,8 +14,6 @@ use App\Http\Traits\WebNotificationTrait;
  */
 class TeamController extends Controller
 {
-    use WebNotificationTrait;
-
     private function populateTeam($team) {
         $team->members;
         $team->invitations;
@@ -107,15 +107,18 @@ class TeamController extends Controller
 
         $this->populateTeam($team);
 
+        $user = $request->user();
         $FcmToken = [];
         foreach ($team->members as $member) {
-            if ($member->device_key !== null) {
+            if ($member->device_key !== null && $member->id !== $user->id) {
                 $FcmToken[] = $member->device_key;
             }
         }
-        if (count($FcmToken) > 0) {
-            $this->sendWebNotification($FcmToken, 'Nouveau nom de liste', $oldname . ' a été renommé en ' . $request->name);
-        }
+        Larafirebase::withAdditionalData([
+            'item' => 'TEAM',
+            'id' => $team->id,
+        ])
+            ->sendMessage($FcmToken);
 
         return response($team, 200);
     }
@@ -165,6 +168,19 @@ class TeamController extends Controller
         $team = Team::find($id);
         $this->populateTeam($team);
 
+        $user = $request->user();
+        $FcmToken = [];
+        foreach ($team->members as $member) {
+            if ($member->device_key !== null && $member->id !== $user->id) {
+                $FcmToken[] = $member->device_key;
+            }
+        }
+        Larafirebase::withAdditionalData([
+            'item' => 'TEAM',
+            'id' => $team->id,
+        ])
+            ->sendMessage($FcmToken);
+
         return response($team, 200);
     }
 
@@ -202,6 +218,18 @@ class TeamController extends Controller
         $team->members()->detach($request->id);
 
         $this->populateTeam($team);
+
+        $FcmToken = [];
+        foreach ($team->members as $member) {
+            if ($member->device_key !== null && $member->id !== $user->id) {
+                $FcmToken[] = $member->device_key;
+            }
+        }
+        Larafirebase::withAdditionalData([
+            'item' => 'TEAM',
+            'id' => $team->id,
+        ])
+            ->sendMessage($FcmToken);
 
         return response($team, 200);
     }

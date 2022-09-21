@@ -7,7 +7,7 @@ export interface User {
 }
 
 export interface Team {
-    id: string;
+    id: string | number;
     name: string;
     createdAt: string;
     updatedAt: string;
