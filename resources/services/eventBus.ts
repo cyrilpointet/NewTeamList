@@ -1,4 +1,3 @@
-// eventBus.js
 import emitter from "tiny-emitter/instance";
 
 export const eventBus = {
