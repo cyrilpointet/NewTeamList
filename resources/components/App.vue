@@ -42,7 +42,7 @@ const installPwa = () => {
     deferredPrompt.value.userChoice.then((choiceResult) => { // eslint-disable-line
         if (deferredPrompt.value) {
             eventBus.$emit("show-snackbar", {
-                text: "TeamList a été installé sur cet appareil",
+                text: "TeamList est en cours d'installation sur cet appareil",
             });
         }
         deferredPrompt.value = null;

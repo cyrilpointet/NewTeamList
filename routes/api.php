@@ -12,6 +12,7 @@ Route::get('/test', [TestController::class, 'test']);
 
 Route::post('/user/register', [UserController::class, 'register']);
 Route::post('/user/login', [UserController::class, 'login']);
+Route::post('/user/askResetPassword', [UserController::class, 'askResetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('user/store_device_key', [UserController::class, 'storeDeviceKey']);

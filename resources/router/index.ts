@@ -7,6 +7,7 @@ import { useTeamStore } from "@/stores/team";
 import HomePage from "@/components/pages/HomePage.vue";
 import AccountPage from "@/components/pages/AccountPage.vue";
 import TeamPage from "@/components/pages/TeamPage.vue";
+import ResetPasswordPage from "@/components/pages/ResetPasswordPage.vue";
 
 async function autoLog(
     to: RouteLocationNormalized,
@@ -75,6 +76,11 @@ const router = createRouter({
             name: "team",
             component: TeamPage,
             beforeEnter: [autoLog, preloadTeam],
+        },
+        {
+            path: "/reset-password",
+            name: "reset-password",
+            component: ResetPasswordPage,
         },
     ],
 });
