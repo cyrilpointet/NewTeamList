@@ -7,8 +7,9 @@
     <title>Test Email</title>
 </head>
 <body>
-<h1>Test EMAIL</h1>
-<p>Bonjour {{ $mailData['name'] }}</p>
-<p>Liens reset {{ $mailData['link'] }}</p>
+<h1>Bonjour {{ $mailData['name'] }}</h1>
+<p>Vous avez oublié votre mot de pass <strong>Team List</strong> ?</p>
+<p>Vous pouvez en créer un nouveau en suivant le lien ci-dessous :</p>
+<a href="{{ $mailData['link'] }}">{{ $mailData['link'] }}</a>
 </body>
 </html>

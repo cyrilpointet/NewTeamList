@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/password-reset/{token}', function ($token) {
+    return view('static/passwordReset')->with(array('token' => $token));
+});
+
 Route::get('/{any?}/{other?}/{another?}', function () {
     return view('welcome');
 });

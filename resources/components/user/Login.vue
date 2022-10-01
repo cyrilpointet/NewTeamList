@@ -55,6 +55,11 @@ async function submit(): Promise<void> {
         <div class="flex justify-center mt-4">
             <Button :disabled="v$.$invalid" @click="submit">Connexion</Button>
         </div>
-        <a href="/reset-password">Mot dfe passe oublié ?</a>
+        <a
+            class="cursor-pointer"
+            @click.prevent="$router.push('reset-password')"
+        >
+            Mot de passe oublié ?
+        </a>
     </div>
 </template>
