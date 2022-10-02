@@ -46,7 +46,7 @@ async function submit(): Promise<void> {
         <Input
             v-model:value="state.name"
             class="flex-1"
-            label="Nouvelle liste"
+            label="Créer une nouvelle liste"
             :error="v$.name.$errors[0]?.$message"
             @blur="v$.name.$touch()"
         />

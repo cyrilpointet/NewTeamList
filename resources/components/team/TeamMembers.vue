@@ -55,6 +55,9 @@ async function deleteMember() {
 </script>
 
 <template>
+    <p v-if="teamStore.isUserManager" class="text-xs flex items-center">
+        <Icon type="star" class="text-primary text-xs" /> = administrateur
+    </p>
     <div
         v-for="member in teamStore.team.members"
         :key="member.id"

@@ -63,19 +63,13 @@ async function leaveTeam() {
 
         <Transition name="turn" mode="out-in">
             <div v-if="!showSetting">
-                <Card class="mt-6">
-                    <TeamPosts />
-                </Card>
-                <Card class="mt-6">
-                    <PostCreate />
-                </Card>
-            </div>
-
-            <div
-                v-else-if="teamStore.team"
-                class="grid gap-4 grid-cols-1 lg:grid-cols-2 mt-6"
-            >
-                <div v-if="teamStore.isUserManager">
+                <div
+                    v-if="
+                        teamStore.isUserManager &&
+                        !teamStore.team.invitations.length
+                    "
+                    class="mt-6"
+                >
                     <Accordion
                         title="Demande d'adhésion en cours"
                         :number="
@@ -89,6 +83,18 @@ async function leaveTeam() {
                         </div>
                     </Accordion>
                 </div>
+                <Card class="mt-6">
+                    <TeamPosts />
+                </Card>
+                <Card class="mt-6">
+                    <PostCreate />
+                </Card>
+            </div>
+
+            <div
+                v-else-if="teamStore.team"
+                class="grid gap-4 grid-cols-1 lg:grid-cols-2 mt-6"
+            >
                 <div v-if="teamStore.isUserManager">
                     <Accordion title="Partager">
                         <div class="p-3">

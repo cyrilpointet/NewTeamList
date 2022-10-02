@@ -52,7 +52,6 @@ async function submit() {
             `user/name/${state.value.name}`
         )) as User[];
         users.value = usersFound;
-        console.log(usersFound);
         eventBus.$emit("update-accordion");
     } catch (e) {
         eventBus.$emit("show-snackbar", {
@@ -107,12 +106,12 @@ async function inviteUser(email: string) {
     <div v-if="users !== null" class="mt-4">
         <div v-if="users.length === 0" class="px-4 py-2">
             <p class="flex-1">Aucun membre trouvé</p>
-            <div v-if="isEmail(state.name)">
+            <Button v-if="isEmail(state.name)" class="mt-2">
                 <p>
-                    Voulez-vous envoyer un email d'invitation à
-                    <strong>{{ state.name }}</strong> ?
+                    Envoyer un email d'invitation à
+                    <strong>{{ state.name }}</strong>
                 </p>
-            </div>
+            </Button>
         </div>
         <div
             v-for="user in users"

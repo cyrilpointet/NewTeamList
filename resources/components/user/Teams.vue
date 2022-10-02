@@ -17,7 +17,7 @@ function goToTeamPage(teamId: string) {
         <div
             v-for="team in userStore.user.teams"
             :key="team.id"
-            class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-100 hover:shadow transition border-b last:border-0"
+            class="p-4 flex justify-between items-center border-solid border-gray-300 border-b last:border-0 transition"
             @click="goToTeamPage(team.id)"
         >
             <p class="font-bold flex-1">{{ team.name }}</p>

@@ -6,6 +6,7 @@ import Register from "@/components/user/Register.vue";
 import Teams from "@/components/user/Teams.vue";
 import TeamCreate from "@/components/team/TeamCreate.vue";
 import TeamFinder from "@/components/team/TeamFinder.vue";
+import UserInvitations from "@/components/user/UserInvitations.vue";
 
 const userStore = useUserStore();
 const hasAccount = ref(false);
@@ -34,8 +35,18 @@ onBeforeMount(async () => {
         </div>
 
         <div v-else>
+            <div v-if="userStore.hasInvitations" class="mt-6">
+                <Accordion
+                    title="Mes invitations en attente"
+                    :number="userStore.user.invitations.length"
+                >
+                    <UserInvitations />
+                </Accordion>
+            </div>
+
             <Card class="mt-6">
-                <Teams class="-m-4" />
+                <h2 class="mb-2">Mes listes</h2>
+                <Teams class="-my-4" />
             </Card>
             <Card class="mt-4">
                 <TeamCreate />
