@@ -3,4 +3,5 @@ export enum ERROR_MSG {
     required = "Ce champs est requis",
     email = "Email invalide",
     badId = "Mauvais email / mot de passe",
+    minLength4 = "4 charactères minimum",
 }

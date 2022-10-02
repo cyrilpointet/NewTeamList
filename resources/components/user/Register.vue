@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { required, email, helpers } from "@vuelidate/validators";
+import { required, email, helpers, minLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import { useUserStore } from "@/stores/user";
 import { ERROR_MSG } from "@/constantes/errorMsg";
@@ -15,12 +15,18 @@ const state = ref({
     password: "",
 });
 const rules = {
-    name: { required: helpers.withMessage(ERROR_MSG.required, required) },
+    name: {
+        required: helpers.withMessage(ERROR_MSG.required, required),
+        minLength: helpers.withMessage(ERROR_MSG.minLength4, minLength(4)),
+    },
     email: {
         required: helpers.withMessage(ERROR_MSG.required, required),
         email: helpers.withMessage(ERROR_MSG.email, email),
     },
-    password: { required: helpers.withMessage(ERROR_MSG.required, required) },
+    password: {
+        required: helpers.withMessage(ERROR_MSG.required, required),
+        minLength: helpers.withMessage(ERROR_MSG.minLength4, minLength(4)),
+    },
 };
 const v$ = useVuelidate(rules, state);
 

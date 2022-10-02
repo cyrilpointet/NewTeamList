@@ -7,7 +7,7 @@
     <title>Team List - Mot de passe réinitialisé</title>
 </head>
 <body>
-<h1>Bonjour {{ $mailData['name'] }}</h1>
+<h3>Bonjour {{ $mailData['name'] }}</h3>
 <p>Votre mot de passe <strong>Team List</strong> a bien été mis à jour</p>
 <p>A bientôt</p>
 <p>L'équipe Team List</p>

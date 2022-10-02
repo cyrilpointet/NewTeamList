@@ -28,6 +28,6 @@ class PasswordUpdatedMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Reset Password')->view('email.passwordUpdated')->with(array('mailData' => $this->mailData));
+        return $this->subject('Team List - Mot de passe mis à jour')->view('email.passwordUpdated')->with(array('mailData' => $this->mailData));
     }
 }

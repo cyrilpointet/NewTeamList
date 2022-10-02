@@ -28,6 +28,6 @@ class ResetPasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Reset Password')->view('email.resetPassword')->with(array('mailData' => $this->mailData));
+        return $this->subject('Team List - Réinitialisation du mot de passe')->view('email.resetPassword')->with(array('mailData' => $this->mailData));
     }
 }

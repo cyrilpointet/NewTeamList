@@ -7,7 +7,7 @@
     <title>Team List - Réinitialisation du mot de passe</title>
 </head>
 <body>
-<h1>Bonjour {{ $mailData['name'] }}</h1>
+<h3>Bonjour {{ $mailData['name'] }}</h3>
 <p>Vous avez oublié votre mot de pass <strong>Team List</strong> ?</p>
 <p>Vous pouvez en créer un nouveau en suivant le lien ci-dessous :</p>
 <a href="{{ $mailData['link'] }}">{{ $mailData['link'] }}</a>

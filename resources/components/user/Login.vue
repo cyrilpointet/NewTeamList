@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import type { Ref } from "vue";
 import axios from "axios";
-import { helpers, required, email } from "@vuelidate/validators";
+import { helpers, required, email, minLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import { useUserStore } from "@/stores/user";
 import { ERROR_MSG } from "@/constantes/errorMsg";
@@ -18,7 +18,10 @@ const rules = {
         required: helpers.withMessage(ERROR_MSG.required, required),
         email: helpers.withMessage(ERROR_MSG.email, email),
     },
-    password: { required: helpers.withMessage(ERROR_MSG.required, required) },
+    password: {
+        required: helpers.withMessage(ERROR_MSG.required, required),
+        minLength: helpers.withMessage(ERROR_MSG.minLength4, minLength(4)),
+    },
 };
 const v$ = useVuelidate(rules, state);
 
