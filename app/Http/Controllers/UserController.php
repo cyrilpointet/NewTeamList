@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordUpdatedMail;
 use App\Mail\ResetPasswordMail;
 use App\Models\Team;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 /**
@@ -32,7 +34,7 @@ class UserController extends Controller
             $request->validate([
                 'name' => 'required',
                 'email' => 'required|email',
-                'password' => 'required'
+                'password' => 'required|min:4'
             ]);
         } catch (\Exception $e) {
             return response([
@@ -213,47 +215,60 @@ class UserController extends Controller
 
     public function resetPassword(Request $request)
     {
-        //Validate input
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|confirmed',
-            'token' => 'required' ]);
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:4',
+            'resetToken' => 'required'
+        ], [
+            'required' => "Champs obligatoire",
+            'email' => "email invalide",
+            'password.confirmed' => "Les mots de passe doivent être identiques",
+            'password.min' => "4 charactères minimum",
+        ]);
 
-        //check if payload is valid before moving on
         if ($validator->fails()) {
-            return redirect()->back()->withErrors(['email' => 'Please complete the form']);
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $password = $request->password;
+        $user = User::where('email', $request->email)->first();
+
+        // Redirect the user back if the email is invalid
+        if (!$user) {
+            return view('static/passwordReset')->with([
+                'resetToken' => $request->token,
+                'errorMessage' => "Email inconnu"
+            ]);
+        }
 
         // Validate the token
         $tokenData = DB::table('password_resets')
             ->where('token', $request->token)->first();
 
         // Redirect the user back to the password reset request form if the token is invalid
-        if (!$tokenData) return view('auth.passwords.email');
-
-        $user = User::where('email', $tokenData->email)->first();
-
-        // Redirect the user back if the email is invalid
-        if (!$user) return redirect()->back()->withErrors(['email' => 'Email not found']);
+        if (!$tokenData || $tokenData->email !== $request->email) {
+            return view('static/passwordReset')->with([
+                'resetToken' => $request->token,
+                'errorMessage' => "Votre demande de réinitialisation est invalide. Veuillez en refaire une nouvelle depuis votre application Team List"
+            ]);
+        }
 
         //Hash and update the new password
-        $user->password = \Hash::make($password);
+        $user->password = Hash::make($request->password);
         $user->update(); //or $user->save();
-
-        //login the user immediately they change password successfully
-        Auth::login($user);
 
         //Delete the token
         DB::table('password_resets')->where('email', $user->email)
             ->delete();
 
-        //Send Email Reset Success Email
-//        if ($this->sendSuccessEmail($tokenData->email)) {
-//            return view('index');
-//        } else {
-//            return redirect()->back()->withErrors(['email' => trans('A Network Error occurred. Please try again.')]);
-//        }
+        Mail::to($user->email)->send(new PasswordUpdatedMail([
+            "name" => $user->name,
+        ]));
+
+        return view('static/updatedPassword')->with([
+            "name" => $user->name,
+        ]);
     }
 }

@@ -17,9 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/password-reset/{token}', function ($token) {
-    return view('static/passwordReset')->with(array('token' => $token));
+Route::get('/password-reset/{token}', function ($resetToken) {
+    //$token = csrf_token();
+    return view('static/passwordReset')->with(array('resetToken' => $resetToken));
 });
+
+Route::post('/password-reset/{token}', [\App\Http\Controllers\UserController::class, 'resetPassword']);
 
 Route::get('/{any?}/{other?}/{another?}', function () {
     return view('welcome');

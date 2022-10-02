@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Team List - Réinitialisation du mot de passe</title>
+    <title>Team List - Mot de passe réinitialisé</title>
 </head>
 <body>
 <h1>Bonjour {{ $mailData['name'] }}</h1>
-<p>Vous avez oublié votre mot de pass <strong>Team List</strong> ?</p>
-<p>Vous pouvez en créer un nouveau en suivant le lien ci-dessous :</p>
-<a href="{{ $mailData['link'] }}">{{ $mailData['link'] }}</a>
+<p>Votre mot de passe <strong>Team List</strong> a bien été mis à jour</p>
 <p>A bientôt</p>
 <p>L'équipe Team List</p>
 </body>
