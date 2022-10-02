@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InvitationMail;
 use App\Models\Invitation;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Kutia\Larafirebase\Facades\Larafirebase;
 
 class InvitationController extends Controller
@@ -43,6 +45,27 @@ class InvitationController extends Controller
             'is_from_team' => true
         ]);
         $invitation->team;
+
+        if ($user !== null && $user->device_key !== null) {
+            $FcmToken = [$user->device_key];
+            Larafirebase::withAdditionalData([
+                'item' => 'USER',
+                'id' => $user->id,
+                'title' => "Invitation Team List",
+                'body' => 'Vous avez une nouvelle invitation à une liste partagée dans Team List'
+            ])
+                ->sendMessage($FcmToken);
+        }
+
+        if ($user === null) {
+            $sender = $request->user();
+            $homeLink = url('/');
+            Mail::to($request->email)->send(new InvitationMail([
+                "name" => $sender->name,
+                "link" => $homeLink
+            ]));
+        }
+
 
         return response($invitation, 201);
     }
@@ -127,6 +150,16 @@ class InvitationController extends Controller
 
         $team->members;
         $team->invitations;
+
+        if (true === $request->status && $user->device_key !== null) {
+            Larafirebase::withTitle('Teamlist - Invitation acceptée')
+                ->withBody('Vous avez rejoint ' . $team->name)
+                ->withAdditionalData([
+                    'item' => 'USER',
+                    'id' => $team->id,
+                ])
+                ->sendMessage($FcmToken);
+        }
 
         return $team;
     }
@@ -213,6 +246,19 @@ class InvitationController extends Controller
 
         if (true === $request->status) {
             $team->members()->attach($user->id, ['admin' => false]);
+            $FcmToken = [];
+            foreach ($team->members as $member) {
+                if ($member->device_key !== null) {
+                    $FcmToken[] = $member->device_key;
+                }
+            }
+            Larafirebase::withTitle('Teamlist: nouveau membre')
+                ->withBody($user->name . ' a rejoint ' . $team->name)
+                ->withAdditionalData([
+                    'item' => 'TEAM',
+                    'id' => $team->id,
+                ])
+                ->sendMessage($FcmToken);
         }
         $invitation->delete();
 

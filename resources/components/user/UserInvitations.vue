@@ -26,8 +26,8 @@ async function manageInvitation(invitation: UserInvitation, status: boolean) {
             text: errorHelper.formatMessage(e),
             type: "error",
         });
-        loading.value = false;
     }
+    loading.value = false;
 }
 </script>
 

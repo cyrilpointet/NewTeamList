@@ -7,6 +7,7 @@ import {
 } from "firebase/messaging";
 import { ApiConsumer } from "@/services/ApiConsumer";
 import { useTeamStore } from "@/stores/team";
+import { useUserStore } from "@/stores/user";
 
 export class FirebaseManager {
     static messaging?: Messaging;
@@ -45,6 +46,7 @@ export class FirebaseManager {
 
     public static listenMessage() {
         onMessage(FirebaseManager.messaging, async (payload) => {
+            console.log(payload);
             if (payload.data.title) {
                 new Notification(payload.data.title, {
                     body: payload.data.body,
@@ -62,7 +64,11 @@ export class FirebaseManager {
 
     private static async manageMessage(item: string, id: string) {
         const teamStore = useTeamStore();
+        const userStore = useUserStore();
         switch (item) {
+            case "USER":
+                await userStore.refreshUser();
+                break;
             case "TEAM":
                 if (parseInt(id) === teamStore.team?.id) {
                     await teamStore.refreshTeam();

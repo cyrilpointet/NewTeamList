@@ -3,9 +3,9 @@ importScripts(
     "https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"
 );
 
-self.addEventListener("activate", () => {
-    console.log("plop");
-});
+// self.addEventListener("activate", () => {
+//     console.log("plop");
+// });
 
 const firebaseConfig = {
     apiKey: "AIzaSyCmquMEn8N7vRFUbYQoOc-CCoIQ1uPFNmE",

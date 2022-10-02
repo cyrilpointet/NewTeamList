@@ -25,6 +25,7 @@ const rules = {
 const v$ = useVuelidate(rules, state);
 
 const userToAdd = ref<null | User>(null);
+const emailToAdd = ref<null | string>(null);
 
 function belongsToTeam(user: User) {
     return !!teamStore.team?.members.find((elem) => elem.id === user.id);
@@ -37,6 +38,7 @@ function isEmail(text: string) {
 
 function closeModal() {
     userToAdd.value = null;
+    emailToAdd.value = null;
 }
 
 watch(state.value, () => {
@@ -106,12 +108,12 @@ async function inviteUser(email: string) {
     <div v-if="users !== null" class="mt-4">
         <div v-if="users.length === 0" class="px-4 py-2">
             <p class="flex-1">Aucun membre trouvé</p>
-            <Button v-if="isEmail(state.name)" class="mt-2">
-                <p>
+            <div v-if="isEmail(state.name)" class="flex justify-center">
+                <Button class="mt-2" @click="emailToAdd = state.name">
                     Envoyer un email d'invitation à
-                    <strong>{{ state.name }}</strong>
-                </p>
-            </Button>
+                    <span class="font-bold">{{ state.name }}</span>
+                </Button>
+            </div>
         </div>
         <div
             v-for="user in users"
@@ -137,6 +139,16 @@ async function inviteUser(email: string) {
             <div class="mt-6 flex justify-between">
                 <Button @click="closeModal">Annuler</Button>
                 <Button @click="inviteUser(userToAdd?.email)">Valider</Button>
+            </div>
+        </div>
+    </Modal>
+
+    <Modal :on-close="closeModal" :is-open="emailToAdd">
+        <div class="w-64">
+            <p>Envoyer un message d'invitation à {{ emailToAdd }} ?</p>
+            <div class="mt-6 flex justify-between">
+                <Button @click="closeModal">Annuler</Button>
+                <Button @click="inviteUser(emailToAdd)">Valider</Button>
             </div>
         </div>
     </Modal>

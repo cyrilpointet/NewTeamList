@@ -202,7 +202,7 @@ class UserController extends Controller
         $tokenData = (array)DB::table('password_resets')
             ->where('email', $request->email)->first();
 
-        $link = config('base_url') . 'password-reset/' . $tokenData['token'];
+        $link = url('/') . 'password-reset/' . $tokenData['token'];
 
         $mailData = [
             "name" => $user->name,

@@ -66,7 +66,7 @@ async function leaveTeam() {
                 <div
                     v-if="
                         teamStore.isUserManager &&
-                        !teamStore.team.invitations.length
+                        !!teamStore.team.invitations.length
                     "
                     class="mt-6"
                 >
